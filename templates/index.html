@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Health Records Management - Home{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1 class="display-4 mb-4 fade-in" style="opacity: 0; transform: translateY(20px);">
+                    Welcome to Health Records Management
+                </h1>
+                <p class="lead mb-5 fade-in" style="opacity: 0; transform: translateY(20px);">
+                    Securely manage your health records and connect with healthcare providers
+                </p>
+                
+                <div class="action-buttons fade-in" style="opacity: 0; transform: translateY(20px);">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-3">
+                        <i data-feather="dashboard"></i> Go to Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">
+                        <i data-feather="log-in"></i> Login
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary btn-lg">
+                        <i data-feather="user-plus"></i> Register
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 fade-in" style="opacity: 0; transform: translateY(20px);">
+            Key Features
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4 fade-in" style="opacity: 0; transform: translateY(20px);">
+                <div class="feature-card text-center">
+                    <i data-feather="file-text" class="feature-icon"></i>
+                    <h3>Secure Records</h3>
+                    <p>Upload and manage your health records securely with encryption</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in" style="opacity: 0; transform: translateY(20px);">
+                <div class="feature-card text-center">
+                    <i data-feather="calendar" class="feature-icon"></i>
+                    <h3>Appointment Booking</h3>
+                    <p>Book appointments with healthcare providers easily</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in" style="opacity: 0; transform: translateY(20px);">
+                <div class="feature-card text-center">
+                    <i data-feather="analytics" class="feature-icon"></i>
+                    <h3>Health Analysis</h3>
+                    <p>Get comprehensive analysis of your health metrics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: white;
+        border-radius: 20px;
+        margin-top: 2rem;
+    }
+
+    .hero-section h1, .hero-section p {
+        color: white;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .action-buttons {
+        margin-top: 2rem;
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}

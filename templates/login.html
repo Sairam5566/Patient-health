@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Health Records Management - Login{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-6 offset-md-3">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2 class="mb-0">Login</h2>
+                <p class="text-muted">Welcome back! Please login to continue</p>
+            </div>
+            <div class="auth-body">
+                <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i data-feather="mail"></i>
+                            </span>
+                            <input type="email" class="form-control" id="email" name="email" 
+                                   placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i data-feather="lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" name="password" 
+                                   placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i data-feather="log-in"></i> Login
+                    </button>
+                </form>
+                <div class="auth-footer mt-3">
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? 
+                            <a href="{{ url_for('register') }}" class="text-primary">
+                                <i data-feather="user-plus"></i> Register here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .auth-header {
+        padding: 2rem;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+
+    .auth-header h2 {
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-body {
+        padding: 2rem;
+    }
+
+    .auth-form .input-group {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .auth-form .input-group-text {
+        background: #f8f9fa;
+        border: none;
+        padding: 0.75rem;
+    }
+
+    .auth-form .form-control {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .auth-form .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+    }
+
+    .auth-footer {
+        padding: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .auth-footer a {
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        color: var(--primary-color);
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+{% endblock %}
