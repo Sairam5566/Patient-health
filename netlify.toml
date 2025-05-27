@@ -1,13 +1,21 @@
 [build]
   base = "frontend/"
-  publish = "templates/"
+  publish = "."
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://patient-health-managementsystem.onrender.com/api/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
-  to = "/main/index.html"
+  to = "/templates/main/index.html"
   status = 200
 
 [[headers]]
   for = "/*"
     [headers.values]
-    Access-Control-Allow-Origin = "*" 
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization" 
