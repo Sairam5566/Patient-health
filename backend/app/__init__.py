@@ -13,7 +13,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.login_message_category = 'info'
 login_manager.login_message = 'Please log in to access this page.'
-login_manager.session_protection = None  # Disable session protection temporarily
+login_manager.session_protection = None
 
 def create_app(config_name='default'):
     app = Flask(__name__,
@@ -29,15 +29,21 @@ def create_app(config_name='default'):
     app.config['USE_SESSION_FOR_NEXT'] = False
     app.config['SESSION_PROTECTION'] = None
     app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
-    app.config['REMEMBER_COOKIE_SECURE'] = False
+    app.config['REMEMBER_COOKIE_SECURE'] = True  # Enable for HTTPS
     app.config['REMEMBER_COOKIE_HTTPONLY'] = True
     
-    # Initialize CORS
+    # Initialize CORS with more specific settings
     CORS(app, resources={
         r"/api/*": {
-            "origins": ["https://patient-health-managementsystem.netlify.app"],
-            "methods": ["GET", "POST", "PUT", "DELETE"],
-            "allow_headers": ["Content-Type", "Authorization"]
+            "origins": [
+                "https://patient-health-managementsystem.netlify.app",
+                "http://localhost:3000",  # For local development
+                "http://localhost:5000"
+            ],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "expose_headers": ["Content-Range", "X-Content-Range"],
+            "supports_credentials": True
         }
     })
     
