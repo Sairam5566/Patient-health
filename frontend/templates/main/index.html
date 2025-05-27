@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h1 class="display-4 mb-4">Welcome to Health Records</h1>
+            <p class="lead">A secure and efficient way to manage your health records and appointments.</p>
+            <div class="mt-4">
+                {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-3">Register as Patient</a>
+                    <a href="{{ url_for('auth.register_doctor') }}" class="btn btn-outline-primary btn-lg">Register as Doctor</a>
+                {% else %}
+                    <a href="{% if current_user.role == 'patient' %}{{ url_for('patient.dashboard') }}{% else %}{{ url_for('doctor.dashboard') }}{% endif %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='img/health-records.svg') }}" alt="Health Records" class="img-fluid">
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">For Patients</h5>
+                    <p class="card-text">Access your medical records, schedule appointments, and track your health journey.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">For Doctors</h5>
+                    <p class="card-text">Manage patient records, appointments, and provide better care with organized information.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Secure & Private</h5>
+                    <p class="card-text">Your health information is protected with state-of-the-art security measures.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

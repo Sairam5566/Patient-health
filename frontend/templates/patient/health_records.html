@@ -1,0 +1,73 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}My Health Records{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Health Records</h1>
+        <a href="{{ url_for('patient.upload_record') }}" class="btn btn-primary">Upload New Record</a>
+    </div>
+
+    {% if records %}
+        <div class="row">
+            {% for record in records %}
+                <div class="col-md-6 mb-4">
+                    <div class="card health-record">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ record.title }}</h5>
+                                    <p class="text-muted mb-2">
+                                        <small>
+                                            Added on {{ record.created_at.strftime('%B %d, %Y') }}
+                                            {% if record.doctor %}
+                                                by Dr. {{ record.doctor.user.first_name }} {{ record.doctor.user.last_name }}
+                                            {% endif %}
+                                        </small>
+                                    </p>
+                                </div>
+                                <span class="badge bg-primary">{{ record.record_type }}</span>
+                            </div>
+                            
+                            {% if record.description %}
+                                <p class="card-text">{{ record.description }}</p>
+                            {% endif %}
+
+                            {% if record.metrics %}
+                                <div class="mt-3">
+                                    <h6>Health Metrics:</h6>
+                                    <ul class="list-unstyled">
+                                        {% for key, value in record.metrics.items() %}
+                                            <li>
+                                                <strong>{{ key|title }}:</strong>
+                                                <span class="text-{{ value.status|lower }}">{{ value.value }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            {% if record.file_path %}
+                                <div class="mt-3">
+                                    <a href="{{ url_for('patient.download_record', id=record.id) }}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-download"></i> Download File
+                                    </a>
+                                    <a href="{{ url_for('patient.view_record', id=record.id) }}" class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You don't have any health records yet. 
+            <a href="{{ url_for('patient.upload_record') }}" class="alert-link">Upload your first record</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

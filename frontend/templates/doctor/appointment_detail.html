@@ -1,0 +1,74 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Appointment Detail{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Appointment Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h5>Patient Information</h5>
+                            <p class="mb-1">
+                                <strong>Name:</strong> {{ appointment.user.first_name }} {{ appointment.user.last_name }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Email:</strong> {{ appointment.user.email }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Phone:</strong> {{ appointment.user.patient_profile.phone or 'Not provided' }}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Appointment Information</h5>
+                            <p class="mb-1">
+                                <strong>Date & Time:</strong> {{ appointment.appointment_date.strftime('%B %d, %Y at %I:%M %p') }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Status:</strong>
+                                <span class="badge bg-{{ 'success' if appointment.status == 'completed' else 'warning' if appointment.status == 'scheduled' else 'danger' }}">
+                                    {{ appointment.status|title }}
+                                </span>
+                            </p>
+                            <p class="mb-1">
+                                <strong>Reason:</strong> {{ appointment.reason }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.status.label(class="form-label") }}
+                            {{ form.status(class="form-select" + (" is-invalid" if form.status.errors else "")) }}
+                            {% for error in form.status.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.notes.label(class="form-label") }}
+                            {{ form.notes(class="form-control" + (" is-invalid" if form.notes.errors else ""), rows=5) }}
+                            {% for error in form.notes.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                            <div class="form-text">Add notes about the appointment, diagnosis, or treatment plan.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('doctor.appointments') }}" class="btn btn-secondary">Back to Appointments</a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

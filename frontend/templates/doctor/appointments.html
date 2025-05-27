@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Appointments</h1>
+        <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary" onclick="filterAppointments('today')">Today</button>
+            <button type="button" class="btn btn-outline-primary" onclick="filterAppointments('upcoming')">Upcoming</button>
+            <button type="button" class="btn btn-outline-primary" onclick="filterAppointments('past')">Past</button>
+        </div>
+    </div>
+
+    {% if appointments %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>Patient</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.appointment_date.strftime('%B %d, %Y %I:%M %p') }}</td>
+                            <td>
+                                <a href="{{ url_for('doctor.patient_detail', id=appointment.user.id) }}" class="text-decoration-none">
+                                    {{ appointment.user.first_name }} {{ appointment.user.last_name }}
+                                </a>
+                            </td>
+                            <td>{{ appointment.reason }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if appointment.status == 'completed' 
+                                                    else 'warning' if appointment.status == 'scheduled' 
+                                                    else 'danger' }}">
+                                    {{ appointment.status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('doctor.appointment_detail', id=appointment.id) }}" 
+                                   class="btn btn-sm btn-primary">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You don't have any appointments scheduled.
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+function filterAppointments(filter) {
+    // Add filtering logic here
+    console.log('Filtering appointments by:', filter);
+}
+</script>
+{% endblock %}
+{% endblock %} 

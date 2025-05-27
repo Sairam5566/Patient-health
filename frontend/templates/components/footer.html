@@ -1,0 +1,48 @@
+{% macro footer() %}
+<footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>Health Records App</h5>
+                <p class="text-muted">Secure and efficient health records management system.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ url_for('main.index') }}" class="text-decoration-none">Home</a></li>
+                    <li><a href="{{ url_for('main.about') }}" class="text-decoration-none">About Us</a></li>
+                    <li><a href="{{ url_for('main.services') }}" class="text-decoration-none">Services</a></li>
+                    <li><a href="{{ url_for('main.contact') }}" class="text-decoration-none">Contact</a></li>
+                    {% if not current_user.is_anonymous and current_user.is_authenticated %}
+                        {% if current_user.role == 'patient' %}
+                            <li><a href="{{ url_for('patient.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                            <li><a href="{{ url_for('patient.appointments') }}" class="text-decoration-none">Appointments</a></li>
+                        {% elif current_user.role == 'doctor' %}
+                            <li><a href="{{ url_for('doctor.dashboard') }}" class="text-decoration-none">Dashboard</a></li>
+                            <li><a href="{{ url_for('doctor.appointments') }}" class="text-decoration-none">Appointments</a></li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-envelope"></i> support@healthrecords.com</li>
+                    <li><i class="bi bi-telephone"></i> +1 (555) 123-4567</li>
+                    <li><i class="bi bi-geo-alt"></i> 123 Health Street, Medical District</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">&copy; 2024 Health Records. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{{ url_for('main.privacy') }}" class="text-decoration-none me-3">Privacy Policy</a>
+                <a href="{{ url_for('main.terms') }}" class="text-decoration-none">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endmacro %} 

@@ -1,0 +1,88 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}My Patients{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Patients</h1>
+        <div class="input-group w-auto">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search patients...">
+            <button class="btn btn-outline-primary" type="button" onclick="searchPatients()">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </div>
+
+    {% if patients %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for patient in patients %}
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ patient.first_name }} {{ patient.last_name }}</h5>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-envelope"></i> {{ patient.email }}<br>
+                                <i class="bi bi-telephone"></i> {{ patient.patient_profile.phone or 'No phone number' }}
+                            </p>
+                            <div class="mt-3">
+                                <h6 class="mb-2">Last Visit</h6>
+                                {% if patient.last_appointment %}
+                                    <p class="text-muted mb-0">{{ patient.last_appointment.appointment_date.strftime('%B %d, %Y') }}</p>
+                                {% else %}
+                                    <p class="text-muted mb-0">No previous visits</p>
+                                {% endif %}
+                            </div>
+                            <div class="mt-3">
+                                <h6 class="mb-2">Next Appointment</h6>
+                                {% if patient.next_appointment %}
+                                    <p class="text-muted mb-0">{{ patient.next_appointment.appointment_date.strftime('%B %d, %Y') }}</p>
+                                {% else %}
+                                    <p class="text-muted mb-0">No upcoming appointments</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ url_for('doctor.patient_detail', id=patient.id) }}" class="btn btn-primary">
+                                    View Profile
+                                </a>
+                                <a href="{{ url_for('doctor.add_health_record', patient_id=patient.id) }}" class="btn btn-outline-primary">
+                                    Add Record
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You don't have any patients yet.
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+function searchPatients() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const patientCards = document.querySelectorAll('.col');
+    
+    patientCards.forEach(card => {
+        const patientName = card.querySelector('.card-title').textContent.toLowerCase();
+        const patientEmail = card.querySelector('.card-text').textContent.toLowerCase();
+        
+        if (patientName.includes(searchTerm) || patientEmail.includes(searchTerm)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+// Add event listener for real-time search
+document.getElementById('searchInput').addEventListener('keyup', searchPatients);
+</script>
+{% endblock %}
+{% endblock %} 

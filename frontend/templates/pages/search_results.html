@@ -1,0 +1,41 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Health Records Management - Search Results{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h2 class="mb-4">Search Results</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Email</th>
+                        <th>Last Record Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr>
+                        <td>{{ patient.patient_id }}</td>
+                        <td>{{ patient.email }}</td>
+                        <td>{{ patient.last_record_date.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <a href="{{ url_for('analyze_health', patient_id=patient.patient_id) }}" class="btn btn-primary btn-sm">
+                                Analyze Health
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No patients found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

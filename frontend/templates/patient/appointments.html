@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Appointments</h1>
+        <a href="{{ url_for('patient.book_appointment') }}" class="btn btn-primary">Book New Appointment</a>
+    </div>
+
+    {% if appointments %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Reason</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                                <tr>
+                                    <td>Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</td>
+                                    <td>{{ appointment.appointment_date.strftime('%B %d, %Y at %I:%M %p') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if appointment.status == 'completed' else 'warning' if appointment.status == 'scheduled' else 'danger' }}">
+                                            {{ appointment.status|title }}
+                                        </span>
+                                    </td>
+                                    <td>{{ appointment.reason }}</td>
+                                    <td>{{ appointment.notes or 'No notes available' }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            You don't have any appointments yet. 
+            <a href="{{ url_for('patient.book_appointment') }}" class="alert-link">Book your first appointment</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 
