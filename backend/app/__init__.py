@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_cors import CORS
 from backend.config.config import config
 from datetime import timedelta
 
@@ -30,6 +31,15 @@ def create_app(config_name='default'):
     app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
     app.config['REMEMBER_COOKIE_SECURE'] = False
     app.config['REMEMBER_COOKIE_HTTPONLY'] = True
+    
+    # Initialize CORS
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": ["https://patient-health-managementsystem.netlify.app"],
+            "methods": ["GET", "POST", "PUT", "DELETE"],
+            "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
     
     # Initialize extensions with app
     db.init_app(app)
