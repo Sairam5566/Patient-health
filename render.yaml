@@ -4,7 +4,7 @@ services:
     env: python
     buildCommand: |
       python -m pip install --upgrade pip
-      pip install wheel
+      pip install --upgrade setuptools wheel
       pip install -r requirements.txt
     startCommand: gunicorn wsgi:app
     envVars:
@@ -19,6 +19,4 @@ services:
       - key: FLASK_ENV
         value: production
       - key: PYTHONPATH
-        value: .
-      - key: PIP_VERSION
-        value: 25.1.1 
+        value: . 
