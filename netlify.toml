@@ -1,9 +1,13 @@
 [build]
   base = "frontend/"
-  publish = "frontend/templates/"
-  command = "# no build command needed for HTML files"
+  publish = "templates/"
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200 
+  to = "/main/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*" 
